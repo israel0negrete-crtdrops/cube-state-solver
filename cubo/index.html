@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cubo de 3 × 3: del estado a la solución — crtdrops</title>
+<meta name="description" content="Captura cómo está tu cubo de 3 × 3. El sistema revisa si ese cubo puede existir y propone dos soluciones: una corta, de unos 20 movimientos, y una por etapas, como la de una persona. Corre en tu navegador.">
+<link rel="stylesheet" href="../css/site.css?v=16">
+<link rel="stylesheet" href="../css/nota.css?v=16">
+<link rel="stylesheet" href="../css/cubo.css?v=2">
+<link rel="icon" type="image/svg+xml" href="../img/favicon-ambar.svg?v=14">
+<link rel="icon" sizes="any" href="../favicon.ico?v=14">
+<link rel="canonical" href="https://crtdrops.mx/taller/cubo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="crtdrops">
+<meta property="og:url" content="https://crtdrops.mx/taller/cubo/">
+<meta property="og:title" content="Cubo de 3 × 3: del estado a la solución — crtdrops">
+<meta property="og:description" content="Dile cómo está tu cubo: revisa si tiene solución y propone dos, una corta y una por etapas. En tu navegador.">
+<meta property="og:image" content="https://crtdrops.mx/img/og.png?v=14">
+<meta name="twitter:card" content="summary_large_image">
+<script src="../js/idioma.js?v=16" defer></script>
+<script src="../js/cubo-calculo.js?v=1" defer></script>
+<script src="../js/cubo.js?v=3" defer></script>
+</head>
+<body data-idioma="es" data-tema="fosforo">
+
+<header class="barra">
+  <div class="env">
+    <a class="marca" href="../index.html"><img src="../img/isotipo-ambar.svg?v=14" alt="" width="44" height="44"><span><b>crt</b>drops</span></a>
+    <nav>
+      <a class="volver" href="../" data-es="&larr; Taller" data-en="&larr; Workshop">&larr; Taller</a>
+      <span class="idioma">
+        <button type="button" data-set-idioma="es" aria-pressed="true">ES</button>
+        <button type="button" data-set-idioma="en" aria-pressed="false">EN</button>
+      </span>
+    </nav>
+  </div>
+</header>
+
+<article id="cubo">
+  <div class="env">
+    <div class="kicker" data-es="TALLER · CUBO DE 3 × 3" data-en="WORKSHOP · 3 × 3 CUBE">TALLER · CUBO DE 3 × 3</div>
+    <h1 data-es="Del estado a la solución" data-en="From the state to the solution">Del estado a la solución</h1>
+    <p class="entrada" data-es="Dime cómo está tu cubo. Te digo si tiene solución y cuál."
+       data-en="Tell me what state your cube is in. I will tell you whether it can be solved, and how.">Dime cómo está tu cubo. Te digo si tiene solución y cuál.</p>
+    <p data-es="Captura tu cubo de 3 × 3 cara por cara. El sistema revisa si ese cubo puede existir: que cada pieza sea real y que cumpla las tres leyes que cumple todo cubo armado de fábrica. Si puede, propone dos soluciones: una corta, de unos 20 movimientos, y una por etapas, como lo resuelve una persona, que se puede seguir y aprender. Corre en tu navegador y no envía nada."
+       data-en="Enter your 3 × 3 cube face by face. The system checks whether that cube can exist: that every piece is real and that it obeys the three laws every factory-assembled cube obeys. If it can, it proposes two solutions: a short one, about 20 moves, and one in stages, the way a person solves it, which you can follow and learn. It runs in your browser and sends nothing.">Captura tu cubo de 3 × 3 cara por cara. El sistema revisa si ese cubo puede existir: que cada pieza sea real y que cumpla las tres leyes que cumple todo cubo armado de fábrica. Si puede, propone dos soluciones: una corta, de unos 20 movimientos, y una por etapas, como lo resuelve una persona, que se puede seguir y aprender. Corre en tu navegador y no envía nada.</p>
+
+    <fieldset id="captura">
+      <legend data-es="1. TU CUBO" data-en="1. YOUR CUBE">1. TU CUBO</legend>
+      <p class="ayuda" data-es="Sostén el cubo con un centro arriba y otro al frente, y no lo cambies. Las cuatro caras de los lados se capturan de frente, con la de arriba hacia arriba. La de arriba, vista desde arriba con el frente hacia ti; la de abajo, vista desde abajo con el frente hacia arriba. Elige un color y toca las casillas; también los centros, si tu cubo tiene otros colores donde aparecen aquí."
+         data-en="Hold the cube with one center on top and another in front, and keep it that way. The four side faces are entered as seen from the front, with the top face up. The top face, seen from above with the front toward you; the bottom face, seen from below with the front at the top. Pick a color and tap the squares; the centers too, if your cube has other colors where they appear here.">Sostén el cubo con un centro arriba y otro al frente, y no lo cambies. Las cuatro caras de los lados se capturan de frente, con la de arriba hacia arriba. La de arriba, vista desde arriba con el frente hacia ti; la de abajo, vista desde abajo con el frente hacia arriba. Elige un color y toca las casillas; también los centros, si tu cubo tiene otros colores donde aparecen aquí.</p>
+      <div class="paleta" id="paleta" role="radiogroup" aria-label="Color para pintar" data-aria-es="Color para pintar" data-aria-en="Color to paint"></div>
+      <div class="red" id="red-captura"></div>
+      <p class="cuenta" id="cuenta"></p>
+      <div class="acciones">
+        <button type="button" id="ejemplo" class="accion sec" data-es="Uno revuelto, de ejemplo" data-en="A scrambled example">Uno revuelto, de ejemplo</button>
+        <button type="button" id="armado" class="accion sec" data-es="Armado" data-en="Solved">Armado</button>
+        <button type="button" id="vaciar" class="accion sec" data-es="Vaciar (deja los centros)" data-en="Clear (keeps the centers)">Vaciar (deja los centros)</button>
+        <button type="button" id="copiar" class="accion sec" data-es="Copiar enlace con este cubo" data-en="Copy link with this cube">Copiar enlace con este cubo</button>
+      </div>
+      <div class="mezcla">
+        <label for="movs-mezcla" data-es="O revuélvelo con movimientos (desde como está ahora):" data-en="Or scramble it with moves (from how it is now):">O revuélvelo con movimientos (desde como está ahora):</label>
+        <div class="fila-mezcla">
+          <input id="movs-mezcla" type="text" spellcheck="false" autocomplete="off" placeholder="R U R' U' F2 D">
+          <button type="button" id="aplicar-mezcla" class="accion sec" data-es="Aplicar" data-en="Apply">Aplicar</button>
+        </div>
+        <p class="error" id="error-mezcla" hidden></p>
+        <p class="chico" id="revuelto-con" hidden></p>
+      </div>
+      <div class="acciones">
+        <button type="button" id="analizar" class="accion" data-es="Analizar y resolver" data-en="Analyze and solve">Analizar y resolver</button>
+      </div>
+    </fieldset>
+
+    <section class="resultado" id="analisis" hidden aria-live="polite">
+      <h2 data-es="2. El análisis" data-en="2. The analysis">2. El análisis</h2>
+      <ul class="revisiones" id="revisiones"></ul>
+      <p class="veredicto" id="veredicto"></p>
+    </section>
+
+    <section class="resultado" id="solucion" hidden>
+      <h2 data-es="3. La solución" data-en="3. The solution">3. La solución</h2>
+      <p id="sosten"></p>
+      <div class="pestanas" role="tablist">
+        <button type="button" role="tab" id="tab-corta" aria-selected="true"></button>
+        <button type="button" role="tab" id="tab-etapas" aria-selected="false"></button>
+      </div>
+      <p class="ayuda" id="sobre-solucion"></p>
+      <div class="reproductor">
+        <div class="red chica" id="red-paso"></div>
+        <div class="panel-paso">
+          <p class="paso-num" id="paso-num"></p>
+          <p class="paso-texto" id="paso-texto" aria-live="polite"></p>
+          <div class="controles">
+            <button type="button" id="ir-inicio" class="accion sec" aria-label="Al inicio" data-aria-es="Al inicio" data-aria-en="To the start">|&lsaquo;</button>
+            <button type="button" id="ir-atras" class="accion sec" aria-label="Un movimiento atrás" data-aria-es="Un movimiento atrás" data-aria-en="One move back">&lsaquo;</button>
+            <button type="button" id="ir-adelante" class="accion" aria-label="Un movimiento adelante" data-aria-es="Un movimiento adelante" data-aria-en="One move forward">&rsaquo;</button>
+            <button type="button" id="ir-fin" class="accion sec" aria-label="Al final" data-aria-es="Al final" data-aria-en="To the end">&rsaquo;|</button>
+          </div>
+          <p class="chico" data-es="Flechas del teclado: un movimiento atrás o adelante. Toca cualquier movimiento de la lista para ir ahí."
+             data-en="Arrow keys: one move back or forward. Tap any move in the list to jump there.">Flechas del teclado: un movimiento atrás o adelante. Toca cualquier movimiento de la lista para ir ahí.</p>
+        </div>
+      </div>
+      <div id="lista"></div>
+    </section>
+
+    <h2 data-es="Cómo se escriben los movimientos" data-en="How the moves are written">Cómo se escriben los movimientos</h2>
+    <p data-es="Cada letra es una cara: U arriba, D abajo, R derecha, L izquierda, F frente, B atrás. La letra sola es un cuarto de vuelta en el sentido del reloj, mirando esa cara de frente; con apóstrofo (R'), en contra; con un 2 (R2), media vuelta. Para B, L y D, «de frente» quiere decir desde atrás, desde la izquierda y desde abajo: B es antihorario visto desde el frente del cubo."
+       data-en="Each letter is a face: U up, D down, R right, L left, F front, B back. The letter alone is a quarter turn clockwise, looking straight at that face; with an apostrophe (R'), counterclockwise; with a 2 (R2), a half turn. For B, L and D, “straight at” means from behind, from the left and from below: B is counterclockwise as seen from the front of the cube.">Cada letra es una cara: U arriba, D abajo, R derecha, L izquierda, F frente, B atrás. La letra sola es un cuarto de vuelta en el sentido del reloj, mirando esa cara de frente; con apóstrofo (R'), en contra; con un 2 (R2), media vuelta. Para B, L y D, «de frente» quiere decir desde atrás, desde la izquierda y desde abajo: B es antihorario visto desde el frente del cubo.</p>
+
+    <h2 data-es="Cómo analiza" data-en="How it analyzes">Cómo analiza</h2>
+    <p data-es="Un cubo de 3 × 3 tiene 26 piezas a la vista: 6 centros, que no se mueven entre sí; 8 esquinas, con tres colores, y 12 aristas, con dos. Primero cuenta los colores y revisa los centros. Luego lee cada esquina y cada arista y busca qué pieza es; una combinación de colores que no existe (dos colores opuestos, o una esquina con sus colores en el orden de su espejo) casi siempre es una casilla mal capturada, y dice dónde."
+       data-en="A 3 × 3 cube shows 26 pieces: 6 centers, which do not move relative to each other; 8 corners, with three colors, and 12 edges, with two. First it counts the colors and checks the centers. Then it reads every corner and every edge and works out which piece it is; a color combination that does not exist (two opposite colors, or a corner whose colors run in the order of its mirror image) is almost always a square entered wrong, and it says where.">Un cubo de 3 × 3 tiene 26 piezas a la vista: 6 centros, que no se mueven entre sí; 8 esquinas, con tres colores, y 12 aristas, con dos. Primero cuenta los colores y revisa los centros. Luego lee cada esquina y cada arista y busca qué pieza es; una combinación de colores que no existe (dos colores opuestos, o una esquina con sus colores en el orden de su espejo) casi siempre es una casilla mal capturada, y dice dónde.</p>
+    <p data-es="Si todas las piezas existen y no se repiten, quedan tres leyes que ningún giro rompe. Cada esquina puede estar girada un tercio de vuelta a un lado o al otro, pero la suma de los giros de las ocho siempre es múltiplo de tres. Las aristas volteadas siempre son un número par. Y cada giro de una cara mueve las esquinas y las aristas con la misma paridad (un ciclo de cuatro de cada una), así que nunca quedan sólo dos piezas intercambiadas. Si una de las tres no se cumple, ese cubo no se arma con giros: alguien lo desarmó y lo armó distinto, o se capturó mal una casilla. Juntas, las tres leyes dejan fuera once de cada doce acomodos de las piezas."
+       data-en="If every piece exists and none repeats, three laws remain that no turn breaks. Each corner can be twisted a third of a turn one way or the other, but the twists of all eight always add up to a multiple of three. Flipped edges always come in an even number. And every face turn moves the corners and the edges with the same parity (a four-cycle of each), so you never end up with just two pieces swapped. If any of the three fails, that cube cannot be solved by turning: someone took it apart and put it back differently, or a square was entered wrong. Together, the three laws rule out eleven of every twelve ways to arrange the pieces.">Si todas las piezas existen y no se repiten, quedan tres leyes que ningún giro rompe. Cada esquina puede estar girada un tercio de vuelta a un lado o al otro, pero la suma de los giros de las ocho siempre es múltiplo de tres. Las aristas volteadas siempre son un número par. Y cada giro de una cara mueve las esquinas y las aristas con la misma paridad (un ciclo de cuatro de cada una), así que nunca quedan sólo dos piezas intercambiadas. Si una de las tres no se cumple, ese cubo no se arma con giros: alguien lo desarmó y lo armó distinto, o se capturó mal una casilla. Juntas, las tres leyes dejan fuera once de cada doce acomodos de las piezas.</p>
+
+    <h2 data-es="Cómo resuelve" data-en="How it solves">Cómo resuelve</h2>
+    <p data-es="La solución corta usa el algoritmo de dos fases. La primera fase lleva el cubo a un estado especial: todas las esquinas y aristas bien orientadas y las cuatro aristas de en medio en su franja. Desde ahí se puede terminar usando sólo giros de arriba y de abajo y medias vueltas de los lados, y eso hace la segunda fase. Cada fase busca a lo hondo, descartando ramas con tablas que dicen cuántos movimientos faltan como mínimo; las tablas tienen alrededor de cuatro millones de casillas y se arman en tu navegador la primera vez (en una computadora, en menos de un segundo)."
+       data-en="The short solution uses the two-phase algorithm. The first phase takes the cube to a special state: every corner and edge correctly oriented, and the four middle edges in their slice. From there it can be finished with only top and bottom turns and half turns of the sides, which is what the second phase does. Each phase searches depth-first, pruning branches with tables that say how many moves are still needed at least; the tables hold about four million entries and are built in your browser the first time (on a computer, in under a second).">La solución corta usa el algoritmo de dos fases. La primera fase lleva el cubo a un estado especial: todas las esquinas y aristas bien orientadas y las cuatro aristas de en medio en su franja. Desde ahí se puede terminar usando sólo giros de arriba y de abajo y medias vueltas de los lados, y eso hace la segunda fase. Cada fase busca a lo hondo, descartando ramas con tablas que dicen cuántos movimientos faltan como mínimo; las tablas tienen alrededor de cuatro millones de casillas y se arman en tu navegador la primera vez (en una computadora, en menos de un segundo).</p>
+    <p data-es="La solución por etapas es la de una persona: la cruz de abajo, las esquinas de abajo, la segunda capa, la cruz de arriba, las esquinas de arriba con su color hacia arriba, esas esquinas en su lugar y, al final, las aristas de arriba. Salvo la cruz, cada etapa usa uno o dos algoritmos con nombre y los giros de arriba; el sistema busca la combinación más corta de ellos para tu cubo y te dice desde qué cara hacerlo. Es más larga, unos 130 movimientos en promedio (entre 70 y 170), pero cada paso tiene una razón que se puede aprender."
+       data-en="The stage-by-stage solution is a person's: the bottom cross, the bottom corners, the second layer, the top cross, the top corners with their color facing up, those corners in place and, last, the top edges. Except for the cross, each stage uses one or two named algorithms plus turns of the top; the system looks for the shortest combination of them for your cube and tells you which face to do it from. It is longer, about 130 moves on average (between 70 and 170), but every step has a reason you can learn.">La solución por etapas es la de una persona: la cruz de abajo, las esquinas de abajo, la segunda capa, la cruz de arriba, las esquinas de arriba con su color hacia arriba, esas esquinas en su lugar y, al final, las aristas de arriba. Salvo la cruz, cada etapa usa uno o dos algoritmos con nombre y los giros de arriba; el sistema busca la combinación más corta de ellos para tu cubo y te dice desde qué cara hacerlo. Es más larga, unos 130 movimientos en promedio (entre 70 y 170), pero cada paso tiene una razón que se puede aprender.</p>
+
+    <h2 data-es="Lo que no hace" data-en="What it does not do">Lo que no hace</h2>
+    <ul>
+      <li data-es="No ve el cubo con la cámara: se captura a mano." data-en="It does not see the cube through the camera: you enter it by hand.">No ve el cubo con la cámara: se captura a mano.</li>
+      <li data-es="La solución corta no siempre es la más corta posible. Se sabe que cualquier cubo se arma en 20 movimientos o menos, contando la media vuelta como uno; esta búsqueda se detiene al encontrar una de 20 o menos o, si ya tiene una, al pasar un segundo y medio, y a veces entrega 21 o más."
+          data-en="The short solution is not always the shortest possible. Any cube is known to be solvable in 20 moves or fewer, counting a half turn as one; this search stops when it finds one of 20 or fewer or, once it has one, after a second and a half, and sometimes returns 21 or more.">La solución corta no siempre es la más corta posible. Se sabe que cualquier cubo se arma en 20 movimientos o menos, contando la media vuelta como uno; esta búsqueda se detiene al encontrar una de 20 o menos o, si ya tiene una, al pasar un segundo y medio, y a veces entrega 21 o más.</li>
+      <li data-es="Cuando falla una de las tres leyes, no sabe qué pieza la rompe: cualquier esquina pudo girarse, cualquier arista voltearse y cualquier par intercambiarse. Sólo dice cuál ley y qué buscar."
+          data-en="When one of the three laws fails, it cannot tell which piece breaks it: any corner could have been twisted, any edge flipped and any pair swapped. It only says which law, and what to look for.">Cuando falla una de las tres leyes, no sabe qué pieza la rompe: cualquier esquina pudo girarse, cualquier arista voltearse y cualquier par intercambiarse. Sólo dice cuál ley y qué buscar.</li>
+      <li data-es="No usa giros de las capas de en medio ni del cubo entero: todo se escribe con las seis caras, con el cubo quieto en tus manos."
+          data-en="It does not use middle-layer turns or whole-cube rotations: everything is written with the six faces, with the cube held still in your hands.">No usa giros de las capas de en medio ni del cubo entero: todo se escribe con las seis caras, con el cubo quieto en tus manos.</li>
+    </ul>
+
+    <p><a href="https://github.com/israel0negrete-crtdrops/cube-state-solver" data-es="El código de esta herramienta, con sus pruebas, en GitHub" data-en="This tool's code, with its tests, on GitHub">El código de esta herramienta, con sus pruebas, en GitHub</a></p>
+  </div>
+</article>
+
+<footer>
+  <div class="env">
+    <p data-es="Corre entera en tu navegador: el cubo que captures no se envía a ningún servidor ni se guarda. No hay analítica de terceros."
+       data-en="It runs entirely in your browser: the cube you enter is not sent to any server or stored. There is no third-party analytics.">Corre entera en tu navegador: el cubo que captures no se envía a ningún servidor ni se guarda. No hay analítica de terceros.</p>
+    <p class="sep-10"><a href="../" data-es="Todo el taller" data-en="The whole workshop">Todo el taller</a> · <a href="../index.html" data-es="Portada" data-en="Home">Portada</a></p>
+    <p class="sep-10">crtdrops.mx · © Israel Negrete Lepe · 2026 · <a href="../aviso-privacidad.html" data-href-es="../aviso-privacidad.html" data-href-en="../aviso-privacidad.html#en" data-es="Aviso de privacidad" data-en="Privacy notice">Aviso de privacidad</a> · <a href="../aviso-legal.html" data-href-es="../aviso-legal.html" data-href-en="../aviso-legal.html#en" data-es="Aviso legal" data-en="Legal notice">Aviso legal</a> · <a href="https://github.com/israel0negrete-crtdrops" rel="me">GitHub</a> · <a href="https://dev.to/crtdrops" rel="me">dev.to</a></p>
+  </div>
+</footer>
+</body>
+</html>
